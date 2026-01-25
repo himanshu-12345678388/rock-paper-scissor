@@ -1,90 +1,80 @@
-function getComputerChoice(){
-    let a=Math.random();
-    console.log(a);
-    let b=a*100;
-    console.log(b);
-    if (b>=0 && b<=33){
-        console.log("computer: rock");
-        return "rock";
+// Function to take user input using prompt
+function getUserChoice() {
+    let choice = prompt("Enter rock, paper, or scissors:");
+
+    if (choice === null) {
+        return "Invalid";
     }
 
-    else if (b>=34 && b<=66){
-        console.log("computer: paper");
-        return "paper";
+    choice = choice.toLowerCase();
+
+    if (choice === "rock" || choice === "paper" || choice === "scissors") {
+        return choice;
+    } else {
+        return "Invalid";
+    }
+}
+
+// Function to generate computer choice
+function getComputerChoice() {
+    const choices = ["rock", "paper", "scissors"];
+    return choices[Math.floor(Math.random() * 3)];
+}
+
+// Function to play one round and return winner
+function playRound() {
+    const userChoice = getUserChoice();
+    const computerChoice = getComputerChoice();
+
+    if (userChoice === "Invalid") {
+        console.log("Invalid input. Round skipped.");
+        return "invalid";
     }
 
-    else if(b>=67 && b<=100){
-        console.log("computer: scissor");
-        return "scissor";
+    console.log(`User: ${userChoice} | Computer: ${computerChoice}`);
+
+    if (userChoice === computerChoice) {
+        console.log("Draw\n");
+        return "draw";
     }
 
-    else{
-        console.log("nothing");
+    if (
+        (userChoice === "rock" && computerChoice === "scissors") ||
+        (userChoice === "paper" && computerChoice === "rock") ||
+        (userChoice === "scissors" && computerChoice === "paper")
+    ) {
+        console.log("User wins this round\n");
+        return "user";
+    } else {
+        console.log("Computer wins this round\n");
+        return "computer";
     }
-
 }
 
-function getHumanChoice(){
-    let player=prompt("enter you choice(rock,paper,scissor):");
-    return player;
+// Game logic: 3 rounds
+let userScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
+
+while (roundsPlayed < 3) {
+    const result = playRound();
+
+    if (result === "user") userScore++;
+    else if (result === "computer") computerScore++;
+    else if (result === "invalid") continue; // don't count invalid round
+
+    roundsPlayed++;
 }
 
+// Final result
+console.log("Final Score:");
+console.log(`User: ${userScore}`);
+console.log(`Computer: ${computerScore}`);
 
-function playRound( humanChoice,computerChoice){
-
-
-let player=humanChoice.toLowerCase();
-let computer=computerChoice;
-console.log("player: "+player);
-
-
-let playr_score=0;
-let comp_score=0;
-
-if (player==="scissor" && computer==="rock"){
-    comp_score++;
+if (userScore > computerScore) {
+    console.log("🎉 User wins the game!");
+} else if (computerScore > userScore) {
+    console.log("💻 Computer wins the game!");
+} else {
+    console.log("🤝 The game is a draw!");
 }
-
-else if(player==="rock" && computer==="paper"){
-    comp_score++;
-}
-
-else if(player==="paper" && computer==="scissor"){
-    comp_score++;
-}
-
-else if (player==="paper" && computer==="rock"){
-    playr_score++;
-}
-
-else if(player==="scissor" && computer==="paper"){
-    playr_score++;
-}
-
-else if(player==="rock" && computer==="scissor"){
-    playr_score++;
-}
-
-console.log(playr_score);
-console.log(comp_score);
-
-if(playr_score>comp_score){
-    console.log("user wins");
-}
-
-else if(playr_score<comp_score){
-    console.log("computer wins");
-}
-
-else{
-    console.log("draw");
-}
-
-  
-}
-for (let i=0;i<5;i++){
-let player1=getHumanChoice();
-    let computer1=getComputerChoice();
-    let human=playRound(player1,computer1);
-}
-    //let play=playGame();
