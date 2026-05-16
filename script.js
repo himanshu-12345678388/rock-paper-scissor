@@ -16,13 +16,13 @@ function computerChoice(){
 
 function humanChoice(event){
     let userChoice;
-    if (event.target===mybtn1){
+    if (event.currentTarget===mybtn1){
         userChoice="rock";
     }
-    else if(event.target===mybtn2){
+    else if(event.currentTarget===mybtn2){
         userChoice="paper";
     }
-    else if(event.target===mybtn3){
+    else if(event.currentTarget===mybtn3){
         userChoice="scissor"
     }
     else{
@@ -63,14 +63,14 @@ function playRound(userChoice){
     }
     
       
-       playerChoice.textContent=`user:${H_Choice} | computer:${C_Choice}`;
-       result.textContent=`result:${Result}`;
-       score.textContent=`Score-- UserScore:${userScore}   ,   ComputerScore:${computerScore}`;
+       playerChoice.textContent=`User: ${H_Choice} | Computer: ${C_Choice}`;
+       result.textContent=`${Result}`;
+       score.textContent=`User: ${userScore} | Computer: ${computerScore}`;
        if(userScore===5){
-        winner.textContent=`User wins teh round!!`;
+        winner.textContent=`🎉 User wins the round!!`;
        }
        else if(computerScore===5){
-        winner.textContent=`computer wins the round!!`;
+        winner.textContent=`🤖 Computer wins the round!!`;
        }
 }
 
@@ -91,4 +91,3 @@ let playerChoice=document.getElementById("choice");
 let result=document.getElementById("result");
 let score=document.getElementById("Score");
 let winner=document.getElementById("winner");
-

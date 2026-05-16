@@ -1,16 +1,215 @@
 <!doctype html>
-<html>
-    <head><title>ROCK-PAPER-SCISSOR GAME</title></head>
-    <body>
-        <button id="btn1" >ROCK</button>
-         <button id="btn2" >PAPER</button>
-         <button id="btn3" >SCISSOR</button>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rock Paper Scissors</title>
+        <style>
+            :root {
+                --ink: #24113f;
+                --panel: rgba(255, 255, 255, 0.18);
+                --panel-border: rgba(255, 255, 255, 0.35);
+                --yellow: #ffd93d;
+                --pink: #ff5c8a;
+                --cyan: #4dd9ff;
+                --white: #fffaf2;
+            }
 
-         <p id="choice"></p>
-         <p id="result"></p>
-         <p id="Score"></p>
-         <p id="winner"></p>
-         
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                min-height: 100vh;
+                margin: 0;
+                display: grid;
+                place-items: center;
+                font-family: Arial, Helvetica, sans-serif;
+                color: var(--white);
+                background:
+                    radial-gradient(circle at top left, rgba(255, 255, 255, 0.26), transparent 28%),
+                    radial-gradient(circle at bottom right, rgba(255, 217, 61, 0.28), transparent 24%),
+                    linear-gradient(135deg, #6a11cb 0%, #2575fc 52%, #ff5c8a 100%);
+            }
+
+            .game-card {
+                width: min(92vw, 620px);
+                padding: 2rem;
+                border: 2px solid var(--panel-border);
+                border-radius: 28px;
+                background: var(--panel);
+                box-shadow: 0 24px 60px rgba(36, 17, 63, 0.35);
+                backdrop-filter: blur(12px);
+                text-align: center;
+            }
+
+            .eyebrow {
+                margin: 0 0 0.5rem;
+                font-size: 0.82rem;
+                font-weight: 700;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: var(--yellow);
+            }
+
+            h1 {
+                margin: 0;
+                font-size: clamp(1.8rem, 5vw, 2.8rem);
+                text-shadow: 3px 3px 0 rgba(36, 17, 63, 0.3);
+            }
+
+            .subtitle {
+                margin: 0.75rem 0 1.5rem;
+                color: rgba(255, 250, 242, 0.85);
+            }
+
+            .choices {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.9rem;
+                margin-bottom: 1.4rem;
+            }
+
+            button {
+                min-height: 112px;
+                border: 0;
+                border-radius: 22px;
+                cursor: pointer;
+                font: inherit;
+                font-weight: 800;
+                color: var(--ink);
+                background: var(--white);
+                box-shadow: 0 8px 0 rgba(36, 17, 63, 0.25);
+                transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            }
+
+            button:hover {
+                transform: translateY(-4px);
+                filter: brightness(1.05);
+                box-shadow: 0 12px 0 rgba(36, 17, 63, 0.25);
+            }
+
+            button:active {
+                transform: translateY(4px);
+                box-shadow: 0 4px 0 rgba(36, 17, 63, 0.25);
+            }
+
+            button span {
+                display: block;
+                font-size: 2.2rem;
+                margin-bottom: 0.35rem;
+            }
+
+            #btn1 {
+                background: linear-gradient(180deg, #fffaf2, #ffd6df);
+            }
+
+            #btn2 {
+                background: linear-gradient(180deg, #fffaf2, #fff0b8);
+            }
+
+            #btn3 {
+                background: linear-gradient(180deg, #fffaf2, #c9f5ff);
+            }
+
+            .status-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.9rem;
+                margin-bottom: 0.9rem;
+            }
+
+            .panel {
+                padding: 1rem;
+                border-radius: 18px;
+                background: rgba(36, 17, 63, 0.2);
+            }
+
+            .label {
+                display: block;
+                margin-bottom: 0.4rem;
+                color: var(--yellow);
+                font-size: 0.78rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            #choice,
+            #result,
+            #Score,
+            #winner {
+                margin: 0;
+            }
+
+            #choice,
+            #result {
+                min-height: 1.5rem;
+                font-weight: 700;
+            }
+
+            #Score {
+                margin-top: 0.2rem;
+                font-size: 1.15rem;
+                font-weight: 800;
+            }
+
+            #winner {
+                min-height: 2rem;
+                margin-top: 1rem;
+                font-size: 1.25rem;
+                font-weight: 900;
+                color: var(--yellow);
+                text-shadow: 2px 2px 0 rgba(36, 17, 63, 0.35);
+            }
+
+            @media (max-width: 560px) {
+                .game-card {
+                    padding: 1.25rem;
+                }
+
+                .choices,
+                .status-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                button {
+                    min-height: 88px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="game-card">
+            <p class="eyebrow">First to 5 wins</p>
+            <h1>Rock Paper Scissors</h1>
+            <p class="subtitle">Choose your move and challenge the computer.</p>
+
+            <section class="choices" aria-label="Choose your move">
+                <button id="btn1"><span>🪨</span>Rock</button>
+                <button id="btn2"><span>📄</span>Paper</button>
+                <button id="btn3"><span>✂️</span>Scissors</button>
+            </section>
+
+            <section class="status-grid">
+                <div class="panel">
+                    <span class="label">Round Picks</span>
+                    <p id="choice">Make your first move!</p>
+                </div>
+                <div class="panel">
+                    <span class="label">Round Result</span>
+                    <p id="result">Waiting...</p>
+                </div>
+            </section>
+
+            <div class="panel">
+                <span class="label">Scoreboard</span>
+                <p id="Score">User: 0 | Computer: 0</p>
+            </div>
+
+            <p id="winner"></p>
+        </main>
+
         <script src="script.js"></script>
     </body>
 </html>
